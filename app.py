@@ -25,8 +25,8 @@ COLUMN_RENAMES = {
 @st.cache_data
 def load_data():
     """Load and process the CSV files."""
-    gwd_regular = pd.read_csv('../game_winning_drives/game_winning_drives_1999_2025_regular_season_qbs.csv')
-    gwd_playoffs = pd.read_csv('../game_winning_drives/game_winning_drives_1999_2025_post_season_qbs.csv')
+    gwd_regular = pd.read_csv('./game_winning_drives/game_winning_drives_1999_2025_regular_season_qbs.csv')
+    gwd_playoffs = pd.read_csv('./game_winning_drives/game_winning_drives_1999_2025_post_season_qbs.csv')
 
     # Add season type column
     gwd_regular['Season Type'] = 'Regular Season'
