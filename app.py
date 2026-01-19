@@ -116,6 +116,8 @@ def main():
         - **Unsuccessful** if the offense **fails to do so**
         - If the score starts tied, it is **not successful unless the offense takes the lead**
 
+        A QB can get a successful GWD even if the team ultimately loses the game, as long as they took the lead in the drive that ended within the last 3 minutes.
+
         Use the **sidebar filters** to customize the data displayed below.
         """)
 
