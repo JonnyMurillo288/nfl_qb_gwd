@@ -87,9 +87,9 @@ def display_table(df, pct_columns, sort_key, order_key, default_sort_col='Total 
 
 def main():
     st.title("NFL Quarterback Game Winning Drives (1999-2025)")
-    st.markdown("Interactive data tables for quarterback game-winning drive statistics")
+    # st.markdown("Interactive data tables for quarterback game-winning drive statistics")
     st.markdown("What QBs are the most clutch? Find out here!")
-    st.markdown("---")
+
     # A game winning drive attempt is a drive within the last 3 minutes of the 4th quarter that a team is down by less than 7 points
     # If at the end of the drive the team ties the game up or takes the lead, success
     # If they fail to do so, fail
@@ -102,32 +102,22 @@ def main():
 
     # I think for the purpose of the stat and "being clutch", it should be cumulative, since the offense can't control a defense blowing it.
 
-    st.markdown("""
-                ### Game-Winning Drive (GWD) Definition
+    with st.expander("Game-Winning Drive (GWD) Definition"):
+        st.markdown("""
+        A **Game-Winning Drive (GWD) attempt** is defined as an offensive drive that meets **all** of the following criteria:
 
-                A **Game-Winning Drive (GWD) attempt** is defined as an offensive drive that meets **all** of the following criteria:
+        - Occurs in the **final 3 minutes of the 4th quarter**
+        - The offense is **trailing**
+        - The deficit is **one score or fewer (8 points)**
 
-                - Occurs in the **final 3 minutes of the 4th quarter**
-                - The offense is **trailing**
-                - The deficit is **one score or fewer (8 points)**
+        A GWD attempt is considered:
 
-                A GWD attempt is considered:
+        - **Successful** if the offense **scores to tie or take the lead**
+        - **Unsuccessful** if the offense **fails to do so**
+        - If the score starts tied, it is **not successful unless the offense takes the lead**
 
-                - **Successful** if the offense **scores to tie or take the lead**
-                - **Unsuccessful** if the offense **fails to do so**
-
-                ### Statistics Included
-
-                The data below includes:
-                - Total GWD attempts
-                - Successful GWDs
-                - Win percentage in games with a GWD attempt
-                - Win percentage after a successful GWD
-
-                Statistics are separated into **Regular Season** and **Playoffs**, with an option to view **combined results**.
-
-                Use the **sidebar filters** to customize the data displayed below.
-                """)
+        Use the **sidebar filters** to customize the data displayed below.
+        """)
 
     # Load data
     gwd_regular, gwd_playoffs, combined, all_qbs = load_data()
@@ -221,6 +211,20 @@ def main():
         filtered = filtered.drop(columns=['Season Type'])
 
         display_table(filtered, pct_columns, 'sort_post_only', 'order_post_only')
+
+    st.markdown("""
+                ---
+                ### Statistics Included
+
+                The data below includes:
+                - Total GWD attempts
+                - Successful GWDs
+                - Win percentage in games with a GWD attempt
+                - Win percentage after a successful GWD
+
+                Statistics are separated into **Regular Season** and **Playoffs**, with an option to view **combined results**.
+
+                """)
 
     # Footer
     st.markdown("---")
