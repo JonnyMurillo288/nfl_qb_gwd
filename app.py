@@ -45,12 +45,30 @@ def load_data():
     return gwd_regular, gwd_playoffs, combined, all_qbs
 
 
-def format_percentage(df, pct_columns):
-    """Format percentage columns as percentages."""
+def get_column_config(df, pct_columns):
+    """Get column configuration for proper numeric formatting."""
+    config = {}
+    for col in df.columns:
+        if col in pct_columns:
+            config[col] = st.column_config.NumberColumn(
+                col,
+                format="%.1f%%",
+                help=f"{col}"
+            )
+        elif col not in ['Quarterback', 'Season Type']:
+            config[col] = st.column_config.NumberColumn(
+                col,
+                format="%d"
+            )
+    return config
+
+
+def prepare_data_for_display(df, pct_columns):
+    """Prepare dataframe for display - convert percentages to 0-100 scale."""
     df = df.copy()
     for col in pct_columns:
         if col in df.columns:
-            df[col] = df[col].apply(lambda x: f"{x*100:.1f}%" if pd.notna(x) and x != '' else '')
+            df[col] = pd.to_numeric(df[col], errors='coerce') * 100
     return df
 
 
@@ -75,10 +93,12 @@ def display_table(df, pct_columns, sort_key, order_key, default_sort_col='Total 
     )
     sort_order = st.radio("Order", ["Descending", "Ascending"], key=order_key, horizontal=True)
 
-    df_sorted = df.sort_values(sort_col, ascending=(sort_order == "Ascending"))
+    df_sorted = df.sort_values(sort_col, ascending=(sort_order == "Ascending"), na_position='last')
+    df_display = prepare_data_for_display(df_sorted, pct_columns)
 
     st.dataframe(
-        format_percentage(df_sorted, pct_columns),
+        df_display,
+        column_config=get_column_config(df_display, pct_columns),
         use_container_width=True,
         hide_index=True
     )
